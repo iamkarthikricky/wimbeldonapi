@@ -3,12 +3,15 @@ const { open } = require("sqlite");
 const sqlite3 = require("sqlite3");
 const path = require("path");
 
+const cors=require("cors");
 const bcrypt = require("bcrypt");
+const jwt = require('jsonwebtoken')
 
 const databasePath = path.join(__dirname, "userData.db");
 
 const app = express();
 
+app.use(cors())
 app.use(express.json());
 
 let database = null;
@@ -70,8 +73,11 @@ app.post("/register", async (request, response) => {
         isUserExists.password
       );
       if (isPasswordMatched === true) {
-        response.status(200);
-        response.send("Login success!");
+        const payload = {
+          username: username,
+        };
+        const jwtToken = jwt.sign(payload, "MY_SECRET_TOKEN");
+        response.send({ jwtToken });
       } else {
         response.status(400);
         response.send("Invalid password");
