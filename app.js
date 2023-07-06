@@ -33,11 +33,33 @@ const initializeDbAndServer = async () => {
 
 initializeDbAndServer();
 
+const authenticateToken = (request, response, next) => {
+  let jwtToken;
+  const authHeader = request.headers["authorization"];
+  if (authHeader !== undefined) {
+    jwtToken = authHeader.split(" ")[1];
+  }
+  if (jwtToken === undefined) {
+    response.status(401);
+    response.send("Invalid JWT Token");
+  } else {
+    jwt.verify(jwtToken, "MY_SECRET_TOKEN", async (error, payload) => {
+      if (error) {
+        response.status(401);
+        response.send("Invalid JWT Token");
+      } else {
+        request.username = payload.username;
+        next();
+      }
+    });
+  }
+}; 
+
 app.post("/register", async (request, response) => {
-    const { username, password} = request.body;
+    const { user_name, password} = request.body;
     const hashedPassword = await bcrypt.hash(password, 10);
   
-    const UserExistQuery = `SELECT * FROM user WHERE user_name = '${username}'`;
+    const UserExistQuery = `SELECT * FROM user WHERE user_name = '${user_name}'`;
     const isUserExists = await database.get(UserExistQuery);
   
     if (isUserExists !== undefined) {
@@ -51,7 +73,7 @@ app.post("/register", async (request, response) => {
       } else {
         const newUserQuery = `INSERT INTO 
                   user (user_name,password) VALUES
-                  ('${username}', '${hashedPassword}')`;
+                  ('${user_name}', '${hashedPassword}')`;
         const dbResponse = await database.run(newUserQuery);
         response.status(200);
         response.send("User created successfully");
@@ -59,9 +81,9 @@ app.post("/register", async (request, response) => {
     }
   });
 
-  app.post("/login", async (request, response) => {
+app.post("/login", async (request, response) => {
     const { username, password } = request.body;
-  
+
     const UserExistQuery = `SELECT * FROM user WHERE user_name = '${username}';`;
     const isUserExists = await database.get(UserExistQuery);
     if (isUserExists == undefined) {
@@ -84,3 +106,22 @@ app.post("/register", async (request, response) => {
       }
     }
   });  
+
+app.post("/round128",async(request,response)=>{
+  const{player1,player2,doubleFaults}=request.body
+  const playerExistsQuery=`SELECT * FROM Round128 WHERE player1 = '${player1}' OR player2='${player2}';`
+  const isPlayerExists = await database.get(playerExistsQuery)
+  if(isPlayerExists !== undefined){
+    response.status(400)
+  }
+  else{
+    const addMatchStats=`INSERT INTO Round128(player1,player2,doublefaults) VALUES('${player1}','${player2}',${doubleFaults});`
+    const dbResponse = await database.run(addMatchStats)
+    response.status(200)
+  }
+})
+app.get('/round128',authenticateToken,async(request,response)=>{
+  const newQuery=`SELECT * FROM Round128;`
+  const qResponse = await database.all(newQuery)
+  response.send(qResponse)
+})

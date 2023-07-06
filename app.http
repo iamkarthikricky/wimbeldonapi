@@ -1,7 +1,15 @@
-POST http://localhost:3000/register
+###
+GET http://localhost:3000/round128
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkthcnRoaWsiLCJpYXQiOjE2ODg2MjgwMDl9.skACWTsm5xaNzjTQaLUrRURsG-fK-F4edtixotRYLB8
+
+###
+POST http://localhost:3000/round128
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkthcnRoaWsiLCJpYXQiOjE2ODg2MjgwMDl9.skACWTsm5xaNzjTQaLUrRURsG-fK-F4edtixotRYLB8
 
 {
-    "user_name":"Karthik2378",
-    "password":"IPLt20@75k"
+    "player1":"C. ALCARAZ",
+    "player2":"J. CHARDY",
+    "doubleFaults":12
 }
