@@ -1,15 +1,2 @@
-###
 GET http://localhost:3000/round128
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkthcnRoaWsiLCJpYXQiOjE2ODg2MjgwMDl9.skACWTsm5xaNzjTQaLUrRURsG-fK-F4edtixotRYLB8
-
-###
-POST http://localhost:3000/round128
-Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkthcnRoaWsiLCJpYXQiOjE2ODg2MjgwMDl9.skACWTsm5xaNzjTQaLUrRURsG-fK-F4edtixotRYLB8
-
-{
-    "player1":"C. ALCARAZ",
-    "player2":"J. CHARDY",
-    "doubleFaults":12
-}
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6IkthcnRoaWsyMzc4IiwiaWF0IjoxNjg4NjM2NTE2fQ.6vpL2331Sz_NUyq_kLXaHSN8EiUW7o6BwYZgbfFZJk4

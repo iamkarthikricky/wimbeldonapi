@@ -123,5 +123,5 @@ app.post("/round128",async(request,response)=>{
 app.get('/round128',authenticateToken,async(request,response)=>{
   const newQuery=`SELECT * FROM Round128;`
   const qResponse = await database.all(newQuery)
-  response.send(qResponse)
+  response.send({matchStats:qResponse})
 })
