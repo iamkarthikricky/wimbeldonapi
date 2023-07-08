@@ -156,3 +156,25 @@ app.get('/round64',authenticateToken,async(request,response)=>{
   const matchesQueryResponse = await database.all(matchesQuery)
   response.send(newResponse(matchesQueryResponse,dFQueryResponse))
 })
+
+app.post("/round32",async(request,response)=>{
+  const{player1,player2,doubleFaults}=request.body
+  const playerExistsQuery=`SELECT * FROM Round32 WHERE player1 = '${player1}' OR player2='${player2}';`
+  const isPlayerExists = await database.get(playerExistsQuery)
+  if(isPlayerExists !== undefined){
+    response.status(400)
+  }
+  else{
+    const addMatchStats=`INSERT INTO Round32(player1,player2,doublefaults) VALUES('${player1}','${player2}',${doubleFaults});`
+    const dbResponse = await database.run(addMatchStats)
+    response.status(200)
+  }
+})
+
+app.get('/round32',authenticateToken,async(request,response)=>{
+  const matchesQuery=`SELECT * FROM Round32;`
+  const totalDFQuery=`SELECT SUM(doublefaults) as totalDF FROM Round32;`
+  const dFQueryResponse = await database.get(totalDFQuery)
+  const matchesQueryResponse = await database.all(matchesQuery)
+  response.send(newResponse(matchesQueryResponse,dFQueryResponse))
+})
