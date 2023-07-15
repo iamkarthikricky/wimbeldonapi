@@ -200,3 +200,69 @@ app.get('/round16',authenticateToken,async(request,response)=>{
   const matchesQueryResponse = await database.all(matchesQuery)
   response.send(newResponse(matchesQueryResponse,dFQueryResponse))
 })
+
+app.post("/round8",async(request,response)=>{
+  const{player1,player2,doubleFaults}=request.body
+  const playerExistsQuery=`SELECT * FROM Round8 WHERE player1 = '${player1}' OR player2='${player2}';`
+  const isPlayerExists = await database.get(playerExistsQuery)
+  if(isPlayerExists !== undefined){
+    response.status(400)
+  }
+  else{
+    const addMatchStats=`INSERT INTO Round8(player1,player2,doublefaults) VALUES('${player1}','${player2}',${doubleFaults});`
+    const dbResponse = await database.run(addMatchStats)
+    response.status(200)
+  }
+})
+
+app.get('/round8',authenticateToken,async(request,response)=>{
+  const matchesQuery=`SELECT * FROM Round8;`
+  const totalDFQuery=`SELECT SUM(doublefaults) as totalDF FROM Round8;`
+  const dFQueryResponse = await database.get(totalDFQuery)
+  const matchesQueryResponse = await database.all(matchesQuery)
+  response.send(newResponse(matchesQueryResponse,dFQueryResponse))
+})
+
+app.post("/round4",async(request,response)=>{
+  const{player1,player2,doubleFaults}=request.body
+  const playerExistsQuery=`SELECT * FROM Round4 WHERE player1 = '${player1}' OR player2='${player2}';`
+  const isPlayerExists = await database.get(playerExistsQuery)
+  if(isPlayerExists !== undefined){
+    response.status(400)
+  }
+  else{
+    const addMatchStats=`INSERT INTO Round4(player1,player2,doublefaults) VALUES('${player1}','${player2}',${doubleFaults});`
+    const dbResponse = await database.run(addMatchStats)
+    response.status(200)
+  }
+})
+
+app.get('/round4',authenticateToken,async(request,response)=>{
+  const matchesQuery=`SELECT * FROM Round4;`
+  const totalDFQuery=`SELECT SUM(doublefaults) as totalDF FROM Round4;`
+  const dFQueryResponse = await database.get(totalDFQuery)
+  const matchesQueryResponse = await database.all(matchesQuery)
+  response.send(newResponse(matchesQueryResponse,dFQueryResponse))
+})
+
+
+app.post("/round2",async(request,response)=>{
+  const{player1,player2,doubleFaults}=request.body
+  const playerExistsQuery=`SELECT * FROM Round2 WHERE player1 = '${player1}' OR player2='${player2}';`
+  const isPlayerExists = await database.get(playerExistsQuery)
+  if(isPlayerExists !== undefined){
+    response.status(400)
+  }
+  else{
+    const addMatchStats=`INSERT INTO Round2(player1,player2,doublefaults) VALUES('${player1}','${player2}',${doubleFaults});`
+    const dbResponse = await database.run(addMatchStats)
+    response.status(200)
+  }
+})
+app.get('/round2',authenticateToken,async(request,response)=>{
+  const matchesQuery=`SELECT * FROM Round2;`
+  const totalDFQuery=`SELECT SUM(doublefaults) as totalDF FROM Round2;`
+  const dFQueryResponse = await database.get(totalDFQuery)
+  const matchesQueryResponse = await database.all(matchesQuery)
+  response.send(newResponse(matchesQueryResponse,dFQueryResponse))
+})
